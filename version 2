@@ -94,13 +94,13 @@ while True:
                                         ["Name", "Strength", "Speed",
                                          "Stealth", "Cunning"])
         if new_card:
-            card_id = int(new_card[0])
+            card_id = max(cards.keys()) + 1
             cards[card_id] = {
-                "Name": new_card[1],
-                "Strength": int(new_card[2]),
-                "Speed": int(new_card[3]),
-                "Stealth": int(new_card[4]),
-                "Cunning": int(new_card[5])
+                "Name": new_card[0],
+                "Strength": int(new_card[1]),
+                "Speed": int(new_card[2]),
+                "Stealth": int(new_card[3]),
+                "Cunning": int(new_card[4])
             }
             #gives the option to edit the new card or confirm 
             while True:
@@ -162,17 +162,31 @@ while True:
                 
 #removes card in the catalogue
     elif choice == "Remove":
-        remove_id = easygui.enterbox("Enter the ID of the card to remove:",
-                                     title="Monster Card Game")
-        if remove_id:
+        remove_id = easygui.enterbox("Enter the number"
+                                     " of the card that you want to remove:",
+                                      title="Monster Card Game")
+        if remove_id and remove_id.isdigit():
             remove_id = int(remove_id)
+
             if remove_id in cards:
+                card_info = "\nCard: " + str(remove_id) + "\n"
+                for key, value in cards[remove_id].items():
+                    card_info += key + ": " + str(value) + "\n"
+
+                confirmation = easygui.buttonbox("Are you sure you want to "
+                                                 "delete this card?\n" +
+                                                 str (card_info),
+                                                 title="Monster Card Game",
+                                                 choices=["Delete", "Cancel"])
+
+            if confirmation == "Delete":
                 del cards[remove_id]
-                easygui.msgbox("Card removed successfully",
-                               title="Monster Card Game")
+                easygui.msgbox("Card removed successfully.", title="Monster Card Game")
             else:
-                easygui.msgbox("Card ID not found",
-                               title="Monster Card Game")
+                easygui.msgbox("Deletion cancelled.", title="Monster Card Game")
+        else:
+            easygui.msgbox("Card not found.", title="Monster Card Game")
+    
 
                 
 
